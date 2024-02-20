@@ -18,7 +18,7 @@ public class ControleDeAudio {
     public int getVolume() {
         return volume;
     }
-
+    
     //aqui na main terei só a instância do objeto volume e as chamadas dos métodos:
     public static void main(String[] args) {
         ControleDeAudio volume = new ControleDeAudio();
