@@ -1,0 +1,28 @@
+1°
+a. Abstração;
+b. Encapsulamento;
+c. new
+
+2°
+F/F/F/F;
+
+3°
+c. classe, objeto e atributo;
+
+4°
+(4)Construtor;
+(3)Operador de Instanciação;
+(2)Classe;
+(1)Objeto;
+
+5°
+q5-audio.ts
+
+6°
+/codigos-java/src/ControleDeAudio.java
+
+7°
+/lista1/q7-retangulo.ts
+
+8°
+/lista1/q9-situacao-financeira.ts
