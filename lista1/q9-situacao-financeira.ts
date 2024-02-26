@@ -18,7 +18,7 @@ class SituacaoFinanceira {
 let situacao: SituacaoFinanceira;
 situacao = new SituacaoFinanceira();
 
-situacao.valorCreditos = -100;
+situacao.valorCreditos = 100;
 situacao.valorDebitos = 1000;
 
 console.log(`Saldo a Pagar: ${situacao.calcular_saldo()}`);
