@@ -1,5 +1,5 @@
 public class ControleDeAudio {
-    private int volume = 2;
+    int volume = 2;
 
     public int aumentarVolume() {
         if (volume < 10) {
