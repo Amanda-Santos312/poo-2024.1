@@ -12,10 +12,11 @@ class Retangulo {
 
     //parte da lista extra:
     eh_quadrado(): boolean {
-        if(this.l1 === this.l2) {
+        /*if(this.l1 === this.l2) {
             return true;
         }
-        return false;
+        return false;*/
+        return this.l1 == this.l2;
     }
 }
 
