@@ -1,0 +1,46 @@
+1°
+Na dinâmica os erros são detectados apenas na execução e na estática os erros podem ser encontrados na compilação, assim não irá executar com o erro.
+
+2°
+Que na dinâmica como o tipo não está explícito, pode ocorrer erros durante a execução.
+
+3°
+javascript:
+const idade = 20
+const x = ‘10’
+
+console.log(idade + x) //2010
+
+4°
+É dita fraca porque ela aceita operações com variáveis de tipos distintos.                       
+int main() {
+    int inteiro = 10;
+    char caractere = 'A';
+    float flutuante = 3.5;
+    // Somando um inteiro com um caractere
+    int resultado = inteiro + caractere; //75
+    printf("Resultado da soma de inteiro e caractere: %d\n", resultado);
+    // Somando um inteiro com um float
+    float soma = inteiro + flutuante; //13.5
+    printf("Resultado da soma de inteiro e float: %.2f\n", soma);
+    return 0;
+}
+
+5°
+function testWithAny(input: any): any {
+	return input;
+}
+console.log(testWithAny(5)); //5
+console.log(testWithAny(“Hello”)); //”Hello”
+console.log(testWithAny(true)); //true
+console.log(testWithAny([1, 2, 3])); //[1, 2, 3]
+
+6°
+Não, aceitar tanto inteiro quanto ponto flutuante em number não faz dele fraco, 
+pelo contrário, ele é forte por entender nesse caso os números que forem utilizados em uma operação.
+
+7°
+int name = ‘Ely’;
+int payment = 120.56;
+int language = ‘Typescript’;
+console.log(`${atributo.name}\nMy payment time is ${atributo.payment}\nand\nmy preferred language is ${atributo.language}`);
