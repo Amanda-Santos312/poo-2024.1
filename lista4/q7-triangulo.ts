@@ -22,7 +22,9 @@ class Triangulo {
     }
 
     ehEscaleno(): boolean {
-        return this.ehTriangulo() === true && (this.lado1 !== this.lado2 && this.lado1 !== this.lado3 && this.lado2 !== this.lado3);
+        return this.ehTriangulo() === true && 
+        !this.ehIsosceles() && 
+        !this.ehEquilatero();
     }
 }
 
