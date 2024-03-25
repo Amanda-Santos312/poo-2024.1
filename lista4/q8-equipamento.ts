@@ -28,4 +28,4 @@ class Equipamento {
 
 let equipamento: Equipamento = new Equipamento(true);
 
-console.log(equipamento.estaLigado());
+console.log(equipamento.estaLigado()); 
