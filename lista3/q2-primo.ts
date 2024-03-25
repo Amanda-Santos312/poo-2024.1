@@ -1,12 +1,6 @@
 /*Crie uma função que recebe como parâmetro um número e retorna true se o
 número for primo e false caso contrário.*/
 
-let num = 2;
-
-let verificarNum = ehPrimo(num);
-
-console.log(verificarNum);
-
 function ehPrimo(num: number) {
     if (num <= 1) {
         return false;
@@ -19,3 +13,5 @@ function ehPrimo(num: number) {
 function ehDivisivel(num: number, divisor: number) {
     return num % divisor === 0;
 }
+
+console.log(ehPrimo(33));

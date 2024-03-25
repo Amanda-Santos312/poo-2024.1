@@ -5,10 +5,10 @@ exibir(“a”, “b”);
 exibir(“a”, “b”, “c”);
 exibir(“a”, “b”, “c”, “d”);*/
 
-let rest_parameters = (a: string , ...letter: string[])=> {
+function exibir(a: string , ...letter: string[]): void {
     console.log(a + ", " + letter.join(", "));
 }
 
-rest_parameters("a");
-rest_parameters("a", "b");
-rest_parameters("a", "b", "c");
+exibir("a", "b");
+exibir("a", "b", "c");
+exibir("a", "b", "c", "d");
