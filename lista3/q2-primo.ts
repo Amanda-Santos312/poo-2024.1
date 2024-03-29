@@ -1,17 +1,20 @@
 /*Crie uma função que recebe como parâmetro um número e retorna true se o
 número for primo e false caso contrário.*/
 
-function ehPrimo(num: number) {
-    if (num <= 1) {
-        return false;
-    } else if (num === 3 || num === 5 || num === 7) {
+function ehPrimo(num: number): boolean {
+    let resultado = true;
+
+    if (num === 2) {
         return true;
     }
-    return !ehDivisivel(num, 3) && !ehDivisivel(num, 5) && !ehDivisivel(num, 7)
+
+    for (let i = 2; i < num; i++) {
+        if (num % i === 0) {
+            resultado = false;
+        }
+    }
+    return resultado;
 }
 
-function ehDivisivel(num: number, divisor: number) {
-    return num % divisor === 0;
-}
 
-console.log(ehPrimo(33));
+console.log(ehPrimo(11));

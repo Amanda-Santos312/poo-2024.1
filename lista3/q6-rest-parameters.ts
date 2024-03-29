@@ -5,8 +5,9 @@ exibir(“a”, “b”);
 exibir(“a”, “b”, “c”);
 exibir(“a”, “b”, “c”, “d”);*/
 
-function exibir(a: string , ...letter: string[]): void {
-    console.log(a + ", " + letter.join(", "));
+function exibir(...letras: string[]): void {
+    letras.forEach((letras)=> console.log(letras));
+    //console.log(a + ", " + letter.join(", "));
 }
 
 exibir("a", "b");

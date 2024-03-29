@@ -2,16 +2,16 @@
 separados por traço (-) no formato string. Para isso, use o método forEach dos
 arrays.*/
 
-let numeros = ['3', '12', '15', '31', '63'];
-
-function printarNumeros(numeros: string[]) { //aqui sendo number
+function printarNumeros(numeros: string[]) {
     let resultado: string = "";
 
-    for (let numero of numeros) {
+    numeros.forEach((numero) => resultado += numero + "-");
+
+    return resultado.substring(0, resultado.length-1); //substring
+    /*for (let numero of numeros) {
         resultado += numero + '-'; //ia precisar aqui do .toString()
     }
-
-    return resultado;
+    return resultado;*/
 }
 
-console.log(printarNumeros(numeros));
+console.log(printarNumeros(['3', '12', '15', '31', '63']));

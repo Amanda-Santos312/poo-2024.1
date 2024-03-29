@@ -5,3 +5,5 @@ function ola() {
 
 const ola = () => 'Olá';
 console.log(ola());
+
+//const ola: Function = () => console.log("Olá");
