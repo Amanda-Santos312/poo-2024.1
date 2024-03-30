@@ -6,15 +6,25 @@ class Equipamento {
     }
 
     liga(): void {
-        this.ligado = true;
+        if(!this.ligado) {
+            this.ligado = true;
+            console.log("Equipamento Ligado!");
+        } else {
+            console.log("Equipamento já esta ligado!");
+        }
     }
 
     desliga(): void {
-        this.ligado = false;
+        if(this.ligado) {
+            this.ligado = false;
+            console.log("Equipamento Desligado!");
+        } else {
+            console.log("Equipamento já esta desligado!");
+        }
     }
 
     inverte(): void {
-        if (this.ligado) {
+        if (this.ligado == true) {
             this.desliga();
         } else {
             this.liga();
@@ -28,4 +38,9 @@ class Equipamento {
 
 let equipamento: Equipamento = new Equipamento(true);
 
-console.log(equipamento.estaLigado()); 
+console.log(equipamento.liga());//Equipamento já está ligado!
+console.log(equipamento.desliga());//Equipamento Desligado!
+console.log(equipamento.liga());//Equipamento Ligado!
+console.log(equipamento.inverte());//Equipamento Desligado!
+console.log(equipamento.inverte());//Equipamento Ligado!
+console.log(equipamento.estaLigado());//true
