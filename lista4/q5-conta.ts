@@ -19,7 +19,7 @@ class ContaBancaria {
         return this.saldo;
     }
 
-    transferir(contaDestino: Conta, valor: number): void {
+    transferir(contaDestino: ContaBancaria, valor: number): void {
         /*this.saldo = this.saldo - valor;
         contaDestino.saldo = contaDestino.saldo + valor;*/
 
@@ -28,15 +28,17 @@ class ContaBancaria {
     }
 }
 
-let c1: Conta = new ContaBancaria("1", 100);
-let c2: Conta = new ContaBancaria("2", 100);
-let c3: Conta;
+let c1: ContaBancaria = new ContaBancaria("1", 100);
+let c2: ContaBancaria = new ContaBancaria("2", 100);
+let c3: ContaBancaria;
 
-c1 = c2;
-c3 = c1;
-c1.sacar(10);
+c1 = c2; // c1 aponta para c2
+c3 = c1; // c3 aponta para c1 que aponta para c2
+c1.sacar(10);//90
 c1.transferir(c2, 50);
 
-console.log(c1.consultarSaldo());
-console.log(c2.consultarSaldo());
-console.log(c3.consultarSaldo());
+console.log(c1.consultarSaldo());//
+console.log(c2.consultarSaldo());//
+console.log(c3.consultarSaldo());//
+
+//c1 e c3 apontam para o endereço de c2
