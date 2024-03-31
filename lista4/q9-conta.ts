@@ -39,6 +39,9 @@ class ContaBancariaNova {
 let conta1: ContaBancariaNova = new ContaBancariaNova("1", 100);
 let conta2: ContaBancariaNova = new ContaBancariaNova("2", 100);
 
-console.log(conta1.consultarSaldo());
+console.log(conta1.consultarSaldo());//100
 console.log(conta1.sacar(110));//false
-console.log(conta1.transferir(conta2, 150));//false
+console.log(conta1.transferir(conta2, 50));//true
+console.log(conta2.consultarSaldo());//150
+console.log(conta1.consultarSaldo());//50
+console.log(conta1.transferir(conta2, 100));//false
