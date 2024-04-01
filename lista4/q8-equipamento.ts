@@ -23,7 +23,7 @@ class Equipamento {
         }
     }
 
-    inverte(): void {
+    inverter(): void {
         if (this.ligado == true) {
             this.desliga();
         } else {
@@ -41,6 +41,6 @@ let equipamento: Equipamento = new Equipamento(true);
 console.log(equipamento.liga());//Equipamento já está ligado!
 console.log(equipamento.desliga());//Equipamento Desligado!
 console.log(equipamento.liga());//Equipamento Ligado!
-console.log(equipamento.inverte());//Equipamento Desligado!
-console.log(equipamento.inverte());//Equipamento Ligado!
+console.log(equipamento.inverter());//Equipamento Desligado!
+console.log(equipamento.inverter());//Equipamento Ligado!
 console.log(equipamento.estaLigado());//true
