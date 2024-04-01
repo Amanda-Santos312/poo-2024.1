@@ -8,8 +8,8 @@ class ContaBancariaNova {
     }
 
     sacar(valor: number): boolean {
-        if (this.saldo - valor >= 0) {
-            this.saldo -= valor;
+        if (this.saldo > valor ) {
+            this.saldo = this.saldo - valor;
             return true;
         } else {
             return false;
