@@ -1,6 +1,6 @@
 class ContaBancariaNova {
     numero: string = "";
-    saldo: number = 0;
+    saldo: number = 0; 
 
     constructor(num: string, saldo: number) {
         this.numero = num;
