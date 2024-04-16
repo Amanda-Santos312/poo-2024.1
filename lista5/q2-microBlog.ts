@@ -16,4 +16,25 @@ class Postagem {
     toString(): string {
         return `Postagem: ${this.texto} \n Curtidas: ${this.qtdCurtidas}`;
     }
+
+
 }
+
+class MicroBlog {
+    postagens: Postagem[] = [];
+
+
+
+    excluir(id: number) {
+
+    }
+
+    postagemMaisCurtida() {
+
+    }
+
+    curtir() {
+        
+    }
+}
+
