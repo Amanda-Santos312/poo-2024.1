@@ -19,7 +19,7 @@ c. classe, objeto e atributo;
 q5-audio.ts
 
 6°
-/codigos-java/src/ControleDeAudio.java
+/codigos-java/src/ControleDeAudio2.java
 
 7°
 /lista1/q7-retangulo.ts
