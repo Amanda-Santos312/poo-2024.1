@@ -1,4 +1,5 @@
-public class ControleDeAudio {
+/* Questão 6 da Lista1 Extra */
+public class ControleDeAudio2 {
     int volume = 2;
 
     public int aumentarVolume() {
@@ -21,7 +22,7 @@ public class ControleDeAudio {
     
     //aqui na main terei só a instância do objeto volume e as chamadas dos métodos:
     public static void main(String[] args) {
-        ControleDeAudio volume = new ControleDeAudio();
+        ControleDeAudio2 volume = new ControleDeAudio2();
 
         System.out.println(volume.aumentarVolume());
         System.out.println(volume.aumentarVolume());
