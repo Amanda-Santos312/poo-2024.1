@@ -3,8 +3,15 @@ class Pessoa {
     
     constructor(private _nome: string = 'Amanda', private _sobrenome: string = 'Santos') {}
 
+    get nome() {
+        return this._nome;
+    }
+
+    get sobrenome() {
+        return this._sobrenome;
+    }
     get nomeCompleto(): string {
-        return `${this._nome} ${this._sobrenome}`;
+        return `${this.nome} ${this.sobrenome}`;
     }
 
 }
@@ -73,17 +80,18 @@ console.log(professor.calcularSalarioSegundaParcela());
 
 //Q5:
 class FolhaPagamento {
-    private funcionarios: (Funcionario | Professor)[]; //pessoas é um array do tipo Pessoa;
+    private _funcionarios: (Funcionario | Professor)[]; //pessoas é um array do tipo Pessoa;
 
     constructor(funcionarios: (Funcionario | Professor)[]) {
-        this.funcionarios = funcionarios;
+        this._funcionarios = funcionarios;
     }
 
     calcularPagamentos(): number {
         let total = 0;
 
-        for (funcionario of this.funcionarios) {
-            total += funcionario.salario
+        for (let pessoa of this._funcionarios) {
+            if (pessoa instanceof Funcionario)
+            total += pessoa.salario
         }
         return total;
     }
