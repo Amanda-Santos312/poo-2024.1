@@ -2,68 +2,68 @@ import { PublicacaoJaCurtidaError, PublicacaoExistenteError, PublicacaoInexisten
 
 class Usuario {
     private _id: number;
-    private email: string;
-    private nome: string;
-    private senha: string;
+    private _nome: string; /*apelido*/
+    private _email: string;
+    private _senha: string;
 
-    constructor(_id: number, nome: string, email: string, senha: string) {
-        this._id = _id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
+    constructor(id: number, nome: string, email: string, senha: string) {
+        this._id = id;
+        this._nome = nome;
+        this._email = email;
+        this._senha = senha;
     }
 
-    get_id(): number {
+    getId(): number {
         return this._id;
     }
 
     getNome(): string {
-        return this.nome;
+        return this._nome;
     }
 
     getEmail(): string {
-        return this.email;
+        return this._email;
     }
 
     getSenha(): string {
-        return this.senha;
+        return this._senha;
     }
 
 }
 
 class Publicacao {
     private _id: number;
-    private usuario: Usuario;
-    private conteudo: string;
-    private dataHora: string;
-    protected interacoes: any;
+    private _usuario: Usuario;
+    private _conteudo: string;
+    private _dataHora: string;
+    protected _interacoes: any;
 
-    constructor(_id: number, usuario: Usuario, conteudo: string, dataHora: string, interacoes: any) {
-        this._id = _id;
-        this.usuario = usuario;
-        this.conteudo = conteudo;
-        this.dataHora = dataHora;
-        this.interacoes = interacoes;
+    constructor(id: number, usuario: Usuario, conteudo: string, dataHora: string, interacoes: any) {
+        this._id = id;
+        this._usuario = usuario;
+        this._conteudo = conteudo;
+        this._dataHora = dataHora;
+        this._interacoes = interacoes;
     }
 
-    get_id(): number {
+    getId(): number {
         return this._id;
     }
 
     getUsuario(): Usuario {
-        return this.usuario;
+        return this._usuario;
     }
 
     getConteudo(): string {
-        return this.conteudo;
+        return this._conteudo;
     }
 
     getDataHora(): string {
-        return this.dataHora;
+        return this._dataHora;
     }
 
     getInteracoes(): any {
-        return this.interacoes;
+        return this._interacoes;
     }
 }
 
@@ -78,37 +78,37 @@ enum TipoInteracao {
 
 class Interacao {
     private _id: number;
-    private publicacao: Publicacao;
-    private tipoInteracao: TipoInteracao;
-    private usuario: Usuario;
-    private dataHora: string;
+    private _publicacao: Publicacao;
+    private _tipoInteracao: TipoInteracao;
+    private _usuario: Usuario;
+    private _dataHora: string;
 
-    constructor(_id: number, publicacao: Publicacao, tipoInteracao: TipoInteracao, usuario: Usuario, dataHora: string) {
-        this._id = _id;
-        this.publicacao = publicacao;
-        this.tipoInteracao = tipoInteracao;
-        this.usuario = usuario;
-        this.dataHora = dataHora;
+    constructor(id: number, publicacao: Publicacao, tipoInteracao: TipoInteracao, usuario: Usuario, dataHora: string) {
+        this._id = id;
+        this._publicacao = publicacao;
+        this._tipoInteracao = tipoInteracao;
+        this._usuario = usuario;
+        this._dataHora = dataHora;
     }
 
-    get_id(): number {
+    getid(): number {
         return this._id;
     }
 
     getPublicacao(): Publicacao {
-        return this.publicacao;
+        return this._publicacao;
     }
 
     getTipoInteracao(): TipoInteracao {
-        return this.tipoInteracao;
+        return this._tipoInteracao;
     }
 
     getUsuario(): Usuario {
-        return this.usuario;
+        return this._usuario;
     }
 
     getDataHora(): string {
-        return this.dataHora;
+        return this._dataHora;
     }
 }
 
@@ -124,7 +124,7 @@ class RedeSocial {
 
     adicionarUsuario(usuario: Usuario) {
         for (let i = 0; i < this.usuarios.length; i++) {
-            if (this.usuarios[i].get_id() === usuario.get_id()) {
+            if (this.usuarios[i].getId() === usuario.getId()) {
                 throw new UsuarioExistenteError("Usuario com ID ja cadrastrado!")
             }
         }
@@ -133,16 +133,16 @@ class RedeSocial {
 
     adicionarPublicacao(publicacao: Publicacao) {
         for (let i = 0; i < this.publicacoes.length; i++) {
-            if (this.publicacoes[i].get_id() === publicacao.get_id()) {
+            if (this.publicacoes[i].getId() === publicacao.getId()) {
                 throw new PublicacaoExistenteError("Publicacao com ID ja cadrastrado!")
             }
         }
         this.publicacoes.push(publicacao);
     }
 
-    consultarUsuarioPorId(_id: number): string | undefined {
+    consultarUsuarioPorId(id: number): string | undefined {
         for (let i = 0; i < this.usuarios.length; i++) {
-            if (this.usuarios[i].get_id() === _id) {
+            if (this.usuarios[i].getId() === id) {
                 return this.usuarios[i].getNome();
             }
         }
@@ -151,7 +151,7 @@ class RedeSocial {
 
     consultarPublicacaoPorId(id: number): string | undefined {
         for (let i = 0; i < this.publicacoes.length; i++) {
-            if (this.publicacoes[i].get_id() === id) {
+            if (this.publicacoes[i].getId() === id) {
                 return this.publicacoes[i].getUsuario().getNome();
             }
         }
@@ -302,9 +302,6 @@ redeSocial.adicionarPublicacao(publicacao5);
 
 publicacao1.interacoes.push(interacao1);
 publicacao2.interacoes.push(interacao2);
-
-redeSocial.adicionarUsuario(usuario1);
-redeSocial.adicionarUsuario(usuario2);
 
 /*redeSocial.listarUsuarios();
 /*redeSocial.listarPublicacoes();*/
