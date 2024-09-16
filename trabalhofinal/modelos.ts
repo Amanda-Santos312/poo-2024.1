@@ -1,32 +1,32 @@
-import { PublicacaoJaCurtidaError, PublicacaoExistenteError, PublicacaoInexistenteError, UsuarioExistenteError } from "./excecoes"
+import { PublicacaoJaCurtidaError, PublicacaoExistenteError, PublicacaoInexistenteError, UsuarioExistenteError, UsuarioInexistenteError } from "./excecoes"
 
 class Usuario {
     private _id: number;
-    private _nome: string; /*apelido*/
+    private _apelido: string;
     private _email: string;
-    private _senha: string;
+    private _documento: string;
 
     constructor(id: number, nome: string, email: string, senha: string) {
         this._id = id;
-        this._nome = nome;
+        this._apelido = nome;
         this._email = email;
-        this._senha = senha;
+        this._documento = senha;
     }
 
     getId(): number {
         return this._id;
     }
 
-    getNome(): string {
-        return this._nome;
+    getApelido(): string {
+        return this._apelido;
     }
 
     getEmail(): string {
         return this._email;
     }
 
-    getSenha(): string {
-        return this._senha;
+    get_documento(): string {
+        return this._documento;
     }
 
 }
@@ -91,7 +91,7 @@ class Interacao {
         this._dataHora = dataHora;
     }
 
-    getid(): number {
+    getId(): number {
         return this._id;
     }
 
@@ -114,18 +114,36 @@ class Interacao {
 
 class PublicacaoAvancada extends Publicacao {
     interacoes: Interacao[] = [];
+
+    usuarioJaInteragiu(usuario: Usuario): boolean {
+        for (let i = 0; i < this.interacoes.length; i++) {
+            if (this.interacoes[i].getUsuario().getId() === usuario.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // Método para reagir, com a verificação embutida
+        reagir(interacao: Interacao): string {
+            if (this.usuarioJaInteragiu(interacao.getUsuario())) {
+                return "O usuário já interagiu com esta publicação.";
+            }
+    
+            this.interacoes.push(interacao);
+            return "Interação adicionada com sucesso.";
+        }
 }
 
 
 class RedeSocial {
     usuarios: Usuario[] = [];
     publicacoes: Publicacao[] = [];
-    avancadas: PublicacaoAvancada[] = [];
+    interacoes: PublicacaoAvancada[] = [];
 
     adicionarUsuario(usuario: Usuario) {
         for (let i = 0; i < this.usuarios.length; i++) {
             if (this.usuarios[i].getId() === usuario.getId()) {
-                throw new UsuarioExistenteError("Usuario com ID ja cadrastrado!")
+                throw new UsuarioExistenteError("Usuario com ID ja cadastrado!")
             }
         }
         this.usuarios.push(usuario);
@@ -143,41 +161,50 @@ class RedeSocial {
     consultarUsuarioPorId(id: number): string | undefined {
         for (let i = 0; i < this.usuarios.length; i++) {
             if (this.usuarios[i].getId() === id) {
-                return this.usuarios[i].getNome();
+                return this.usuarios[i].getApelido();
             }
         }
-        return undefined;
+        throw new UsuarioInexistenteError('Usuario Inexistente!');
     }
 
     consultarPublicacaoPorId(id: number): string | undefined {
         for (let i = 0; i < this.publicacoes.length; i++) {
             if (this.publicacoes[i].getId() === id) {
-                return this.publicacoes[i].getUsuario().getNome();
+                return this.publicacoes[i].getUsuario().getApelido();
             }
         }
-        return undefined;
+        throw new PublicacaoInexistenteError('Publicacao Inexistente!');
+    }
+
+    contarPublicacoesPorUsuario(usuario: Usuario): number {
+        let contagem = 0;
+        
+        for (let i = 0; i < this.publicacoes.length; i++) {
+            if (this.publicacoes[i].getUsuario().getId() === usuario.getId()) {
+                contagem++;
+            }
+        }
+        return contagem;
     }
 
     listarUsuarios(): void {
         if (this.usuarios.length > 0) {
             console.log("Lista de usuários cadastrados: ");
             this.usuarios.forEach((usuario) => {
-                console.log(usuario.getNome());
+                console.log(usuario.getApelido());
             });
-        } else {
-            console.log("Não há usuários cadastrados.");
         }
+        throw new UsuarioInexistenteError("Não há usuários cadastrados.");
     }
 
     listarPublicacoes(): void {
         if (this.publicacoes.length > 0) {
             console.log("Lista de publicacoes cadastrados: ");
             this.publicacoes.forEach((publicacao) => {
-                console.log(publicacao.getUsuario().getNome());
+                console.log(publicacao.getUsuario().getApelido());
             });
-        } else {
-            console.log("Não há publicacoes cadastrados.");
-        }
+        } 
+        throw new PublicacaoInexistenteError("Não há publicacoes cadastrados.");
     }
 
     listarPublicacoesDecrescente(): void {
@@ -198,7 +225,7 @@ class RedeSocial {
             const data = publicacao.getDataHora();
             const conteudo = publicacao.getConteudo();
 
-            console.log(`Usuario: ${usuario.getNome()}`);
+            console.log(`Usuario: ${usuario.getApelido()}`);
             console.log(`Data e Hora: ${data}`);
             console.log(`Conteudo: ${conteudo}`);
 
@@ -208,7 +235,7 @@ class RedeSocial {
                 console.log(`Interacoes: ${quantidadeInteracoes}`);
 
                 publicacao.interacoes.forEach((interacao) => {
-                    console.log(`- Reacao: ${TipoInteracao[interacao.getTipoInteracao()]},\n- Usuario: ${interacao.getUsuario().getNome()}`)
+                    console.log(`- Reacao: ${TipoInteracao[interacao.getTipoInteracao()]},\n- Usuario: ${interacao.getUsuario().getApelido()}`)
                 });
             }
             console.log(`\n-----`)
@@ -223,7 +250,7 @@ class RedeSocial {
             }
         });
 
-        this.publicacoes.sort((a, b) => {
+        publicacoesUsuario.sort((a, b) => {
             const dataA = new Date(a.getDataHora());
             const dataB = new Date(b.getDataHora());
             return dataB.getTime() - dataA.getTime(); // Ordena decrescentemente
@@ -235,36 +262,14 @@ class RedeSocial {
             const data = publicacao.getDataHora();
             const conteudo = publicacao.getConteudo();
 
-            console.log(`- Usuario: ${usuario.getNome()}`)
+            console.log(`- Usuario: ${usuario.getApelido()}`)
             console.log(`- Data e Hora: ${data}`);
-            console.log(`-Conteudo: ${conteudo}`);
+            console.log(`- Conteudo: ${conteudo}`);
             console.log('\n--------')
         })
     }
-
-    reagirAPublicacaoAvancada(publicacao: PublicacaoAvancada, usuario: Usuario, tipoInteracao: TipoInteracao): void {
-        for (let i = 0; i < publicacao.interacoes.length; i++) {
-            const interacao = publicacao.interacoes[i];
-
-            if (interacao.getUsuario().getEmail() === usuario.getEmail()) {
-                throw new PublicacaoJaCurtidaError("Usuario ja reagiu a publicacao");
-            }
-        }
-
-
-
-
-    }
 }
 
-
-/*listarNomesDeUsuarios(): string[] {
-    let nomes: string[] = [];
-    for (let i = 0; i < this.usuarios.length; i++) {
-        nomes.push(this.usuarios[i].getNome()); // Adiciona apenas o nome ao array
-    }
-    return nomes;
-}*/
 
 
 /*1.a*/
@@ -274,17 +279,18 @@ let usuario3 = new Usuario(1, "Maria", "maria@email.com", "678910");
 /*console.log(usuario1)*/
 
 /*1.b*/
-let publicacao1 = new PublicacaoAvancada(1, usuario1, "Olá, mundo!", "2021-10-01", []);
-let publicacao2 = new PublicacaoAvancada(2, usuario2, "Hello, world!", "2021-10-02", []);
-let publicacao3 = new PublicacaoAvancada(2, usuario2, "Hello, world!", "2021-10-02", []);
-let publicacao4 = new PublicacaoAvancada(3, usuario1, "Aula de POO", "2021-10-03", []);
-let publicacao5 = new PublicacaoAvancada(4, usuario1, "Sabadouu", "2024-09-14", []);
+let publicacao1 = new PublicacaoAvancada(1, usuario1, "Olá, mundo!", "2021-10-01, 15:00", []);
+let publicacao2 = new PublicacaoAvancada(2, usuario2, "Hello, world!", "2021-10-02, 23:34", []);
+let publicacao3 = new PublicacaoAvancada(2, usuario2, "Hello, world!", "2021-10-02, 06:30", []);
+let publicacao4 = new PublicacaoAvancada(3, usuario1, "Aula de POO", "2021-10-03, 08:50", []);
+let publicacao5 = new PublicacaoAvancada(4, usuario1, "Sabadouu", "2024-09-14, 12:45", []);
 /*console.log(publicacao1)*/
 
 /*1.d*/
 let interacao1 = new Interacao(1, publicacao1, TipoInteracao.curtir, usuario2, "2021-10-03");
 let interacao2 = new Interacao(2, publicacao2, TipoInteracao.naoCurtir, usuario1, "2021-10-04");
 /*console.log(interacao1)*/
+
 
 /*2.a*/
 let redeSocial = new RedeSocial();
@@ -296,24 +302,32 @@ redeSocial.adicionarPublicacao(publicacao2);
 redeSocial.adicionarPublicacao(publicacao4);
 redeSocial.adicionarPublicacao(publicacao5);
 
+
 /*2.b TESTES DE ERROS:*/
-/*I redeSocial.adicionarUsuario(usuario3) VAI DAR ERROR */
-/*II redeSocial.adicionarPublicacao(publicacao3); VAI DAR ERROR */
+/*redeSocial.adicionarUsuario(usuario3) /*VAI DAR ERROR */
+/*redeSocial.adicionarPublicacao(publicacao3);/* VAI DAR ERROR*/
 
 publicacao1.interacoes.push(interacao1);
 publicacao2.interacoes.push(interacao2);
 
-/*redeSocial.listarUsuarios();
+
+/*redeSocial.listarUsuarios();*/
 /*redeSocial.listarPublicacoes();*/
 
 /*2.c*/
 /*redeSocial.listarPublicacoesDecrescente();*/
 /*2.d*/
-redeSocial.exibirPublicacoesPorUsuario("joao@email.com");
+/*redeSocial.exibirPublicacoesPorUsuario("joao@email.com");*/
+
+/*2.e*/
+console.log(publicacao1.reagir(interacao1));
+
+
 
 /*3*/
-/*console.log(redeSocial.consultarPublicacaoPorId(1)) OK;*/
-/*console.log(redeSocial.consultarUsuarioPorId(1)); OK*/
+/*console.log(redeSocial.consultarUsuarioPorId(4)); /*OK*/
+/*console.log(redeSocial.consultarPublicacaoPorId(6)); /*OK*/
+console.log(redeSocial.contarPublicacoesPorUsuario(usuario1));
 
 
-export { Usuario, Publicacao, TipoInteracao, Interacao, RedeSocial }
+export { Usuario, Publicacao, TipoInteracao, Interacao, PublicacaoAvancada, RedeSocial }

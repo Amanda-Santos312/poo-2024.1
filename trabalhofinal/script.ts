@@ -1,6 +1,4 @@
-/*import {} from "./app";*/
+import {AppRedeSocial} from "./app";
 
-/* Instanciar;
-   Método de carregar arquivo;
-   Método para salvar arquivo;
-*/
+let appRedeSocial: AppRedeSocial = new AppRedeSocial();
+appRedeSocial.menu();
