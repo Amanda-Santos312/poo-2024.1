@@ -10,6 +10,12 @@ class UsuarioExistenteError extends AplicacaoError {
     }
 }
 
+class UsuarioInexistenteError extends AplicacaoError {
+    constructor(message: string) {
+        super(message)
+    }
+}
+
 class PublicacaoExistenteError extends AplicacaoError {
     constructor(message: string) {
         super(message)
@@ -30,4 +36,4 @@ class PublicacaoJaCurtidaError extends AplicacaoError {
 
 
 
-export {PublicacaoJaCurtidaError, PublicacaoInexistenteError, UsuarioExistenteError, PublicacaoExistenteError}
+export {AplicacaoError, PublicacaoJaCurtidaError, PublicacaoInexistenteError, UsuarioExistenteError, UsuarioInexistenteError, PublicacaoExistenteError}
