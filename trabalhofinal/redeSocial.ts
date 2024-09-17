@@ -1,32 +1,34 @@
-/*import {} from './excecoes';*/
-import { Usuario, Publicacao, TipoInteracao, Interacao, PublicacaoAvancada } from "./modelos";
+import { UsuarioInexistenteError } from "./excecoes";
+import { Usuario, Publicacao, TipoInteracao, Interacao, PublicacaoAvancada} from "./modelos";
 
 class RedeSocial {
     private _usuarios: Usuario[] = [];
     private _publicacoes: Publicacao[] = [];
 
-    inserirUsuario(usuario: Usuario) {
-
+    inserir(usuario: Usuario) {
+        try {
+            this.consultar(usuario.getId());
+            throw new Error ('Id ja existe' + usuario.getId());
+        } catch (error) {
+            if (error instanceof UsuarioInexistenteError) {
+                this._usuarios.push(usuario);
+            }
+        }
     }
 
-    inserirPublicacao(publicacao: Publicacao) {
+    consultar(id: Number): Usuario {
+        let idProcurado!: Usuario;
 
-    }
-
-    buscarUsuario(usuario: Usuario) {
-
-    }
-
-    buscarPublicacao(publicacao: Publicacao) {
-
-    }
-
-    consultarUsuarioPorId() {
-
-    }
-
-    consultarPublicacoesPorUsuario() {
-        /*a gente passa o id do usuário e deve listar todas as publicações dele*/
+        for (let i: number = 0; i < this._usuarios.length; i++) {
+            if (this._usuarios[i].getId() == id) {
+                idProcurado = this._usuarios[i];
+                break;
+            }
+        }
+        if (idProcurado == null) {
+            throw new UsuarioInexistenteError('Conta não encontrada: ' + id);
+        }
+        return idProcurado;
     }
 
 }
