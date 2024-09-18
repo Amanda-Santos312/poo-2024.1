@@ -35,15 +35,13 @@ class Publicacao {
     private _id: number;
     private _usuario: Usuario;
     private _conteudo: string;
-    private _dataHora: string;
-    protected _interacoes: any;
+    private _dataHora: Date;
 
-    constructor(id: number, usuario: Usuario, conteudo: string, dataHora: string, interacoes: any) {
+    constructor(id: number, usuario: Usuario, conteudo: string, dataHora: Date) {
         this._id = id;
         this._usuario = usuario;
         this._conteudo = conteudo;
         this._dataHora = dataHora;
-        this._interacoes = interacoes;
     }
 
     getId(): number {
@@ -58,13 +56,10 @@ class Publicacao {
         return this._conteudo;
     }
 
-    getDataHora(): string {
+    getDataHora(): Date {
         return this._dataHora;
     }
 
-    getInteracoes(): any {
-        return this._interacoes;
-    }
 }
 
 enum TipoInteracao {
@@ -81,9 +76,9 @@ class Interacao {
     private _publicacao: Publicacao;
     private _tipoInteracao: TipoInteracao;
     private _usuario: Usuario;
-    private _dataHora: string;
+    private _dataHora: Date;
 
-    constructor(id: number, publicacao: Publicacao, tipoInteracao: TipoInteracao, usuario: Usuario, dataHora: string) {
+    constructor(id: number, publicacao: Publicacao, tipoInteracao: TipoInteracao, usuario: Usuario, dataHora: Date) {
         this._id = id;
         this._publicacao = publicacao;
         this._tipoInteracao = tipoInteracao;
@@ -107,7 +102,7 @@ class Interacao {
         return this._usuario;
     }
 
-    getDataHora(): string {
+    getDataHora(): Date {
         return this._dataHora;
     }
 }
@@ -279,16 +274,16 @@ let usuario3 = new Usuario(1, "Maria", "maria@email.com", "678910");
 /*console.log(usuario1)*/
 
 /*1.b*/
-let publicacao1 = new PublicacaoAvancada(1, usuario1, "Olá, mundo!", "2021-10-01, 15:00", []);
-let publicacao2 = new PublicacaoAvancada(2, usuario2, "Hello, world!", "2021-10-02, 23:34", []);
-let publicacao3 = new PublicacaoAvancada(2, usuario2, "Hello, world!", "2021-10-02, 06:30", []);
-let publicacao4 = new PublicacaoAvancada(3, usuario1, "Aula de POO", "2021-10-03, 08:50", []);
-let publicacao5 = new PublicacaoAvancada(4, usuario1, "Sabadouu", "2024-09-14, 12:45", []);
+let publicacao1 = new PublicacaoAvancada(1, usuario1, "Olá, mundo!", new Date("2021-10-01, 15:00"));
+let publicacao2 = new PublicacaoAvancada(2, usuario2, "Hello, world!", new Date("2021-10-02, 23:34"));
+let publicacao3 = new PublicacaoAvancada(2, usuario2, "Hello, world!", new Date("2021-10-02, 06:30"));
+let publicacao4 = new PublicacaoAvancada(3, usuario1, "Aula de POO", new Date("2021-10-03, 08:50"));
+let publicacao5 = new PublicacaoAvancada(4, usuario1, "Sabadouu", new Date("2024-09-14, 12:45"));
 /*console.log(publicacao1)*/
 
 /*1.d*/
-let interacao1 = new Interacao(1, publicacao1, TipoInteracao.curtir, usuario2, "2021-10-03");
-let interacao2 = new Interacao(2, publicacao2, TipoInteracao.naoCurtir, usuario1, "2021-10-04");
+let interacao1 = new Interacao(1, publicacao1, TipoInteracao.curtir, usuario2, new Date("2021-10-03"));
+let interacao2 = new Interacao(2, publicacao2, TipoInteracao.naoCurtir, usuario1, new Date("2021-10-04"));
 /*console.log(interacao1)*/
 
 
