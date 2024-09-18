@@ -274,11 +274,11 @@ let usuario3 = new Usuario(1, "Maria", "maria@email.com", "678910");
 /*console.log(usuario1)*/
 
 /*1.b*/
-let publicacao1 = new PublicacaoAvancada(1, usuario1, "Olá, mundo!", new Date("2021-10-01, 15:00"));
-let publicacao2 = new PublicacaoAvancada(2, usuario2, "Hello, world!", new Date("2021-10-02, 23:34"));
-let publicacao3 = new PublicacaoAvancada(2, usuario2, "Hello, world!", new Date("2021-10-02, 06:30"));
-let publicacao4 = new PublicacaoAvancada(3, usuario1, "Aula de POO", new Date("2021-10-03, 08:50"));
-let publicacao5 = new PublicacaoAvancada(4, usuario1, "Sabadouu", new Date("2024-09-14, 12:45"));
+let publicacao1 = new PublicacaoAvancada(1, usuario1, "Olá, mundo!", new Date("2021-10-01T15:00"));
+let publicacao2 = new PublicacaoAvancada(2, usuario2, "Hello, world!", new Date("2021-10-02T23:34"));
+let publicacao3 = new PublicacaoAvancada(2, usuario2, "Hello, world!", new Date("2021-10-02T06:30"));
+let publicacao4 = new PublicacaoAvancada(3, usuario1, "Aula de POO", new Date("2021-10-03T08:50"));
+let publicacao5 = new PublicacaoAvancada(4, usuario1, "Sabadouu", new Date("2024-09-14T12:45"));
 /*console.log(publicacao1)*/
 
 /*1.d*/
