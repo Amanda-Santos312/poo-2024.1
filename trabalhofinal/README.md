@@ -7,8 +7,8 @@
 #### 👩🏻‍💻Ana Claúdia De Miranda Adad
 #### 👩🏻‍💻Mariana de Araújo Gomes Sousa
 ---
-### Link do Vídeo:
-#### https://youtu.be/jk1JFZ7m4eM?si=efwK33boCn51Fvjw
-
-### Diagrama UML:
-#### arquivo: uml.jpeg
+### 🎥 Vídeos:
+#### [Parte1](https://youtu.be/jk1JFZ7m4eM?si=efwK33boCn51Fvjw)
+#### [Parte2](https://youtu.be/cPg2xoz1jRY?si=D9kbS0-nnefxJlaL)
+---
+### [Diagrama UML](./uml.jpg)
