@@ -1,5 +1,3 @@
-import { PublicacaoJaCurtidaError, PublicacaoExistenteError, PublicacaoInexistenteError, UsuarioExistenteError, UsuarioInexistenteError } from "./excecoes"
-
 class Usuario {
     private _id: number;
     private _apelido: string;
@@ -110,6 +108,11 @@ class Interacao {
 class PublicacaoAvancada extends Publicacao {
     interacoes: Interacao[] = [];
 
+    getInteracoes(): Interacao[] {
+        return this.interacoes;
+    }
+
+
     usuarioJaInteragiu(usuario: Usuario): boolean {
         for (let i = 0; i < this.interacoes.length; i++) {
             if (this.interacoes[i].getUsuario().getId() === usuario.getId()) {
@@ -119,154 +122,17 @@ class PublicacaoAvancada extends Publicacao {
         return false;
     }
     // Método para reagir, com a verificação embutida
-        reagir(interacao: Interacao): string {
-            if (this.usuarioJaInteragiu(interacao.getUsuario())) {
-                return "O usuário já interagiu com esta publicação.";
-            }
-    
-            this.interacoes.push(interacao);
-            return "Interação adicionada com sucesso.";
+    reagir(interacao: Interacao): string {
+        if (this.usuarioJaInteragiu(interacao.getUsuario())) {
+            return "O usuário já interagiu com esta publicação.";
         }
-}
-
-
-class RedeSocial {
-    usuarios: Usuario[] = [];
-    publicacoes: Publicacao[] = [];
-    interacoes: PublicacaoAvancada[] = [];
-
-    adicionarUsuario(usuario: Usuario) {
-        for (let i = 0; i < this.usuarios.length; i++) {
-            if (this.usuarios[i].getId() === usuario.getId()) {
-                throw new UsuarioExistenteError("Usuario com ID ja cadastrado!")
-            }
-        }
-        this.usuarios.push(usuario);
-    }
-
-    adicionarPublicacao(publicacao: Publicacao) {
-        for (let i = 0; i < this.publicacoes.length; i++) {
-            if (this.publicacoes[i].getId() === publicacao.getId()) {
-                throw new PublicacaoExistenteError("Publicacao com ID ja cadrastrado!")
-            }
-        }
-        this.publicacoes.push(publicacao);
-    }
-
-    consultarUsuarioPorId(id: number): string | undefined {
-        for (let i = 0; i < this.usuarios.length; i++) {
-            if (this.usuarios[i].getId() === id) {
-                return this.usuarios[i].getApelido();
-            }
-        }
-        throw new UsuarioInexistenteError('Usuario Inexistente!');
-    }
-
-    consultarPublicacaoPorId(id: number): string | undefined {
-        for (let i = 0; i < this.publicacoes.length; i++) {
-            if (this.publicacoes[i].getId() === id) {
-                return this.publicacoes[i].getUsuario().getApelido();
-            }
-        }
-        throw new PublicacaoInexistenteError('Publicacao Inexistente!');
-    }
-
-    contarPublicacoesPorUsuario(usuario: Usuario): number {
-        let contagem = 0;
         
-        for (let i = 0; i < this.publicacoes.length; i++) {
-            if (this.publicacoes[i].getUsuario().getId() === usuario.getId()) {
-                contagem++;
-            }
-        }
-        return contagem;
-    }
-
-    listarUsuarios(): void {
-        if (this.usuarios.length > 0) {
-            console.log("Lista de usuários cadastrados: ");
-            this.usuarios.forEach((usuario) => {
-                console.log(usuario.getApelido());
-            });
-        }
-        throw new UsuarioInexistenteError("Não há usuários cadastrados.");
-    }
-
-    listarPublicacoes(): void {
-        if (this.publicacoes.length > 0) {
-            console.log("Lista de publicacoes cadastrados: ");
-            this.publicacoes.forEach((publicacao) => {
-                console.log(publicacao.getUsuario().getApelido());
-            });
-        } 
-        throw new PublicacaoInexistenteError("Não há publicacoes cadastrados.");
-    }
-
-    listarPublicacoesDecrescente(): void {
-        if (this.publicacoes.length === 0) {
-            throw new PublicacaoInexistenteError("Nao existe nenhuma publicacao!");
-            return;
-        }
-
-        this.publicacoes.sort((a, b) => {
-            const dataA = new Date(a.getDataHora());
-            const dataB = new Date(b.getDataHora());
-            return dataB.getTime() - dataA.getTime(); // Ordena decrescentemente
-        });
-
-        console.log("\n***** Feed de Publicacoes *****");
-        this.publicacoes.forEach((publicacao) => {
-            const usuario = publicacao.getUsuario();
-            const data = publicacao.getDataHora();
-            const conteudo = publicacao.getConteudo();
-
-            console.log(`Usuario: ${usuario.getApelido()}`);
-            console.log(`Data e Hora: ${data}`);
-            console.log(`Conteudo: ${conteudo}`);
-
-
-            if (publicacao instanceof PublicacaoAvancada) {
-                const quantidadeInteracoes = publicacao.interacoes.length;
-                console.log(`Interacoes: ${quantidadeInteracoes}`);
-
-                publicacao.interacoes.forEach((interacao) => {
-                    console.log(`- Reacao: ${TipoInteracao[interacao.getTipoInteracao()]},\n- Usuario: ${interacao.getUsuario().getApelido()}`)
-                });
-            }
-            console.log(`\n-----`)
-        })
-    }
-
-    exibirPublicacoesPorUsuario(email: string): void {
-        const publicacoesUsuario: Publicacao[] = [];
-        this.publicacoes.forEach((publicacao) => {
-            if (publicacao.getUsuario().getEmail() === email) {
-                publicacoesUsuario.push(publicacao);
-            }
-        });
-
-        publicacoesUsuario.sort((a, b) => {
-            const dataA = new Date(a.getDataHora());
-            const dataB = new Date(b.getDataHora());
-            return dataB.getTime() - dataA.getTime(); // Ordena decrescentemente
-        });
-
-        console.log("\n***** Publicacoes do Usuario *****");
-        publicacoesUsuario.forEach((publicacao) => {
-            const usuario = publicacao.getUsuario();
-            const data = publicacao.getDataHora();
-            const conteudo = publicacao.getConteudo();
-
-            console.log(`- Usuario: ${usuario.getApelido()}`)
-            console.log(`- Data e Hora: ${data}`);
-            console.log(`- Conteudo: ${conteudo}`);
-            console.log('\n--------')
-        })
+        this.interacoes.push(interacao);
+            return "Interação adicionada com sucesso.";
     }
 }
 
-
-
+//TESTES DA PARTE1:
 /*1.a*/
 let usuario1 = new Usuario(1, "João", "joao@email.com", "123456");
 let usuario2 = new Usuario(2, "Maria", "maria@email.com", "678910");
@@ -282,13 +148,13 @@ let publicacao5 = new PublicacaoAvancada(4, usuario1, "Sabadouu", new Date("2024
 /*console.log(publicacao1)*/
 
 /*1.d*/
-let interacao1 = new Interacao(1, publicacao1, TipoInteracao.curtir, usuario2, new Date("2021-10-03"));
-let interacao2 = new Interacao(2, publicacao2, TipoInteracao.naoCurtir, usuario1, new Date("2021-10-04"));
-/*console.log(interacao1)*/
+let interacao1 = new Interacao(1, publicacao1, TipoInteracao.curtir, usuario2, new Date("2021-10-03T12:40"));
+let interacao2 = new Interacao(2, publicacao2, TipoInteracao.naoCurtir, usuario1, new Date("2021-10-04T17:55"));
+/*console.log(interacao1)
 
 
 /*2.a*/
-let redeSocial = new RedeSocial();
+/*let redeSocial = new RedeSocial();
 redeSocial.adicionarUsuario(usuario1)
 redeSocial.adicionarUsuario(usuario2)
 
@@ -302,8 +168,8 @@ redeSocial.adicionarPublicacao(publicacao5);
 /*redeSocial.adicionarUsuario(usuario3) /*VAI DAR ERROR */
 /*redeSocial.adicionarPublicacao(publicacao3);/* VAI DAR ERROR*/
 
-publicacao1.interacoes.push(interacao1);
-publicacao2.interacoes.push(interacao2);
+/*publicacao1.interacoes.push(interacao1);
+publicacao2.interacoes.push(interacao2);*/
 
 
 /*redeSocial.listarUsuarios();*/
@@ -315,14 +181,11 @@ publicacao2.interacoes.push(interacao2);
 /*redeSocial.exibirPublicacoesPorUsuario("joao@email.com");*/
 
 /*2.e*/
-console.log(publicacao1.reagir(interacao1));
-
-
+/*console.log(publicacao1.reagir(interacao1));*/
 
 /*3*/
 /*console.log(redeSocial.consultarUsuarioPorId(4)); /*OK*/
 /*console.log(redeSocial.consultarPublicacaoPorId(6)); /*OK*/
-console.log(redeSocial.contarPublicacoesPorUsuario(usuario1));
+/*console.log(redeSocial.contarPublicacoesPorUsuario(usuario1));*/
 
-
-export { Usuario, Publicacao, TipoInteracao, Interacao, PublicacaoAvancada, RedeSocial }
+export { Usuario, Publicacao, TipoInteracao, Interacao, PublicacaoAvancada }
