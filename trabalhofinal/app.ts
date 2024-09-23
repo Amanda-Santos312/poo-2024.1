@@ -82,7 +82,7 @@ class AppRedeSocial {
             '8 - Consultar Usuario Por Id  🔎\n' +
             '9 - Consultar Publicacao Por Id  🔎\n' +
             '10 - Contar Publicacoes Por Usuario ➕\n' +
-            '\n0 - Sair \n'
+            '\n0 - Sair ❌\n'
         );
     }
 
