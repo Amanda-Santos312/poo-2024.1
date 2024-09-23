@@ -1,13 +1,14 @@
 import prompt from 'prompt-sync';
 import { RedeSocial } from './redeSocial'
-import { Usuario } from './modelos'
-import {AplicacaoError} from './excecoes'
+import { Usuario, Publicacao, Interacao, TipoInteracao, PublicacaoAvancada} from './modelos'
+import {AplicacaoError, UsuarioExistenteError, UsuarioInexistenteError, PublicacaoExistenteError, PublicacaoInexistenteError, InteracaoExistenteError, EmailExistenteError} from './excecoes'
 
-/*Menu com as opçoes que chamam métodos.*/
 
 class AppRedeSocial {
     private _redeSocial: RedeSocial;
-    private _idUsuario = 0;
+    private _idUsuario = 1;
+    private _idPublicacao = 1;
+    private _idInteracao = 1;
     private _input: prompt.Prompt = prompt();
 
     constructor () {
@@ -25,7 +26,34 @@ class AppRedeSocial {
 
                 switch (op) {
                     case '1':
-                        this.cadastrar();
+                        this.cadastrarUsuario(); //OK
+                        break;   
+                    case '2':
+                        this._redeSocial.listarUsuarios(); //OK
+                        break;
+                    case '3':
+                        this.cadastrarPublicacao(); //OK
+                        break;
+                    case '4':
+                        this.adicionarInteracao();
+                        break;
+                    case '5':
+                        this._redeSocial.listarPublicacoes(); //OK
+                        break;    
+                    case '6':
+                        this._redeSocial.listarPublicacoesDecrescente(); //OK
+                        break;   
+                    case '7':
+                        this.buscarPublicacoesPorEmail();   
+                        break;
+                    case '8':
+                        this.consultarUsuarioPorId();
+                        break;
+                    case '9':
+                        this.consultarPublicacaoPorId();
+                        break;
+                    case '10':
+                        this.exibirContagemPublicacoes();
                         break;
                 }
             } catch (e) {
@@ -42,34 +70,192 @@ class AppRedeSocial {
     }
 
     private listarOpcoes() {
-        console.log('');
-        console.log('1 - Cadastrar Usuario ' + 
-            '2 - Listar Usuarios  ' +
-            '3 - Cadastrar Publicacoes  ' +
-            '4 - Adicionar Interacao' +
-            '5 - Listar Publicacoes ' +
-            '6 - Consultar Usuario Por Id  ' +
-            '7 - Consultar Publicacao Por Id  ' +
-            '  - Listar Publicacoes Por Email' +
-            '8 - Listar Publicacoes Decrescente  ' +
-            '9 - Contar Publicacoes Por Usuario  ' +
-            '10 -  ' +
-            '0 - Sair \n'
+        console.log('\n📲 Bem Vindo(a) a sua Rede Social!📲');
+        console.log('\n1 - Cadastrar Usuario👤\n' + 
+            '2 - Listar Usuarios 🔎\n' +
+            '3 - Cadastrar Publicacoes 📰\n' +
+            '4 - Adicionar Interacao 👥\n' +
+            '5 - Listar Publicacoes 🔎\n' +
+            '6 - Listar Publicacoes Decrescente 🔎\n' +
+            '7 - Listar Publicacoes Por Email 🔎\n' +
+            '\n******** Funcionalidades Adicionais ******** \n' +
+            '8 - Consultar Usuario Por Id  🔎\n' +
+            '9 - Consultar Publicacao Por Id  🔎\n' +
+            '10 - Contar Publicacoes Por Usuario ➕\n' +
+            '\n0 - Sair \n'
         );
     }
 
-    private cadastrar() {
-        let id: string = this._input('ID: ');
+    cadastrarUsuario() {
+        let idInput: string = this._input('ID: ');
+        let id: number = parseInt(idInput);
+
+        if (this._redeSocial.consultar(id)) {
+            throw new UsuarioExistenteError('ID já existe!');
+        }
+
         let apelido: string = this._input('Apelido: ');
         let email: string = this._input('Email: ');
-        let documento: string = this._input('Documento: ');
-        let usuario: Usuario = new Usuario(this._idUsuario++, apelido,email, documento);
 
-        this._redeSocial.inserir(usuario);
+        if (this._redeSocial.validarEmail(email)) {
+            throw new EmailExistenteError('Email inválido!');
+        }
+
+        let documento: string = this._input('Documento: ');
+        let usuario: Usuario = new Usuario(id, apelido, email, documento);
+
+        try {
+            this._redeSocial.adicionarUsuario(usuario);
+        } catch (e) {
+            if (e instanceof UsuarioExistenteError) {
+                console.log(e.message);
+            } else {
+                console.log('Erro ao adicionar usuario')
+            }
+        }
     }
 
+    cadastrarPublicacao(): void {
+        let tipoPublicacao: string = this._input('\nDigite "S" para publicação simples ou "A" para publicação avançada: ').toUpperCase();
+        let idUsuario: number = parseInt(this._input('ID Usuario: '));
+
+        let usuario = this._redeSocial.consultar(idUsuario);
+        if (!usuario) {
+            console.log('Usuario nao encontrado!');
+            return;
+        }
+
+        let idPub: number = parseInt(this._input('ID da Publicação: '));
+    
+        if (this._redeSocial.consultarPublicacaoPorId(idPub)) {
+            throw new PublicacaoExistenteError('ID de publicação já existe!');
+        }
+
+        let conteudo: string = this._input('Conteúdo: ');
+        let dataHora: Date = new Date();
+
+        let publicacao: Publicacao = tipoPublicacao === 'A' 
+        ? new PublicacaoAvancada(idPub, usuario, conteudo, dataHora) 
+        : new Publicacao(idPub, usuario, conteudo, dataHora);
+
+        console.log(`\nPublicação ${tipoPublicacao === 'A' ? 'Avançada' : 'Simples'} criada com sucesso!`);
+        
+        try {
+            this._redeSocial.adicionarPublicacao(publicacao);
+            console.log('\nPublicação cadastrada com sucesso!');
+        } catch (e) {
+            if (e instanceof PublicacaoExistenteError) {
+                console.log('Erro: Publicação com ID já cadastrada!');
+            } else {
+                console.log('Erro inesperado ao adicionar publicação:', e);
+            }
+        }
+    }    
+
+
+    adicionarInteracao() {
+        let idPublicacao: number = parseInt(this._input('ID da Publicação: '));
+        let publicacao = this._redeSocial.consultarPublicacaoPorId(idPublicacao);
+
+        if (!publicacao || !(publicacao instanceof PublicacaoAvancada)) {
+            throw new PublicacaoInexistenteError("Publicação avançada não encontrada!");
+        }
+
+        let idUsuario: number = parseInt(this._input('ID Usuario que reagiu: '));
+        let usuario = this._redeSocial.consultar(idUsuario);
+
+        if (!usuario) {
+            throw new UsuarioInexistenteError('Usuário não encontrado!');
+        }
+
+        if ((publicacao as PublicacaoAvancada).usuarioJaInteragiu(usuario)) {
+            throw new InteracaoExistenteError("O usuário já reagiu a esta publicação.");
+        }
+
+        let tipoInteracaoInput: string = this._input('Digite o tipo de interação (curtir, naoCurtir, riso, surpresa, triste, raiva): ');
+        let tipoInteracao: TipoInteracao = TipoInteracao[tipoInteracaoInput as keyof typeof TipoInteracao]; //conversão para Enum
+
+        let dataHora: Date = new Date();
+        let interacao: Interacao = new Interacao(this._idInteracao++, publicacao, tipoInteracao, usuario, dataHora);
+
+        try {
+            (publicacao as PublicacaoAvancada).reagir(interacao);
+            console.log('\nInteração adicionada com sucesso!');
+        } catch (e) {
+            console.log('\nErro ao adicionar interação:');
+        }
+    }
+    
+    buscarPublicacoesPorEmail(): void {
+        let email: string = this._input('Digite o e-mail do usuário: ');
+
+        let usuario = this._redeSocial.validarEmail(email);
+        if (!usuario) {
+            console.log('Usuário não encontrado!');
+            return;
+        }
+        this._redeSocial.exibirPublicacoesPorUsuario(email);
+    }
+
+    consultarUsuarioPorId(): void {
+        let id: number = parseInt(this._input('\nId de usuario para buscar: '));
+
+        for (let i = 0; i < this._redeSocial.usuarios.length; i++) {
+            if (this._redeSocial.usuarios[i].getId() === id) {
+                console.log(`Usuario Encontrado: ${this._redeSocial.usuarios[i].getApelido()} (Email: ${this._redeSocial.usuarios[i].getEmail()})`);
+                return;
+            }
+        }
+        throw new UsuarioInexistenteError('Usuario Inexistente!');
+    }
+
+
+    consultarPublicacaoPorId(): void {
+        let id: number = parseInt(this._input('\nId Publicação Para Buscar: '));
+
+        for (let i = 0; i < this._redeSocial.publicacoes.length; i++) {
+            if (this._redeSocial.publicacoes[i].getId() === id) {
+                console.log(`Publicacao Encontrada: \nUsuário: ${this._redeSocial.publicacoes[i].getUsuario().getApelido()} \nConteudo: ${this._redeSocial.publicacoes[i].getConteudo()} (\nData e Hora: ${this._redeSocial.publicacoes[i].getDataHora().toLocaleString()})`); 
+                return;
+            }
+        }
+        throw new PublicacaoInexistenteError('Publicacao Inexistente!');
+    }
+
+    contarPublicacoesPorUsuario(): number {
+        let id: number = parseInt(this._input('\nId de usuario para buscar: '));
+
+        let contagem = 0;
+        
+        let usuario = this._redeSocial.consultar(id);
+
+        if (!usuario) {
+            throw new UsuarioInexistenteError('Usuário não encontrado!');
+        }
+
+        for (let i = 0; i < this._redeSocial.publicacoes.length; i++) {
+            if (this._redeSocial.publicacoes[i].getUsuario().getId() === usuario.getId()) {
+                contagem++;
+            }
+        }
+        return contagem;
+    }
+
+    exibirContagemPublicacoes(): void {
+        try {
+            const contagem = this.contarPublicacoesPorUsuario();
+            console.log(`O usuário tem ${contagem} publicações.`);
+        } catch (e) {
+            if (e instanceof UsuarioInexistenteError) {
+                console.log(e.message); // Exibe a mensagem de erro
+            } else {
+                console.log('Erro ao contar publicações:', e);
+            }
+        }
+    }
+    
     private imprimirPressionarEnter() {
-        this._input("Pressione <enter>");
+        this._input("\nPressione <enter>");
     }
 }
 
