@@ -28,12 +28,17 @@ class PublicacaoInexistenteError extends AplicacaoError  {
     }
 }
 
-class PublicacaoJaCurtidaError extends AplicacaoError {
+class InteracaoExistenteError extends AplicacaoError {
+    constructor(message: string) {
+        super(message)
+    }
+}
+
+class EmailExistenteError extends AplicacaoError {
     constructor(message: string) {
         super(message)
     }
 }
 
 
-
-export {AplicacaoError, PublicacaoJaCurtidaError, PublicacaoInexistenteError, UsuarioExistenteError, UsuarioInexistenteError, PublicacaoExistenteError}
+export {AplicacaoError, UsuarioExistenteError, UsuarioInexistenteError, PublicacaoExistenteError, PublicacaoInexistenteError, EmailExistenteError, InteracaoExistenteError}
