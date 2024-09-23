@@ -63,17 +63,6 @@ class RedeSocial {
         return null;
     }
     
-    /*contarPublicacoesPorUsuario(usuario: Usuario): number {
-        let contagem = 0;
-        
-        for (let i = 0; i < this.publicacoes.length; i++) {
-            if (this.publicacoes[i].getUsuario().getId() === usuario.getId()) {
-                contagem++;
-            }
-        }
-        return contagem;
-    }*/
-    
     listarUsuarios(): void {
         if (this.usuarios.length === 0) {
             console.log("\nNão há usuários cadastrados!");
